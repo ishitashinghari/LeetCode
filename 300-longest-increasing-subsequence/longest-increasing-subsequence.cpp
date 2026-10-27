@@ -11,15 +11,16 @@ public:
 
     int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
-        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        vector<int> ne(n+1,0),c(n+1,0);
         for(int i=n-1;i>=0;i--){
             for(int pi=i-1;pi>=-1;pi--){
-                int m=0+dp[i+1][pi+1];
+                int m=0+ne[pi+1];
                 if(pi==-1 || nums[pi]<nums[i])
-                m=max(m,1+dp[i+1][i+1]); //add +1 to 2nd state while tabulating
-                dp[i][pi+1]=m;
+                m=max(m,1+ne[i+1]); //+1 in 1st parameter -> replace with next
+                c[pi+1]=m;
             }
+            ne=c;
         }
-        return dp[0][0];
+        return ne[0];
     }
 };

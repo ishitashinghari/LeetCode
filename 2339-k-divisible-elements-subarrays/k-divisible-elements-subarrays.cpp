@@ -1,20 +1,30 @@
 class Solution {
 public:
+    class TrieNode {
+        public:
+        unordered_map<int,TrieNode*> mp;
+    };
+
     int countDistinct(vector<int>& nums, int k, int p) {
         int n=nums.size();
-        set<vector<int>> s;
+        TrieNode* rt=new TrieNode();
+        int c=0;
         for(int i=0;i<n;i++){
-            vector<int> t;
-            int c=0;
+            TrieNode* curr=rt;
+            int count=0;
             for(int j=i;j<n;j++){
-                t.push_back(nums[j]);
                 if(nums[j]%p==0)
-                c++;
-                if(c>k)
+                count++;
+                if(count>k)
                 break;
-                s.insert(t);
+                if(curr->mp.find(nums[j])==curr->mp.end())
+                {
+                    curr->mp[nums[j]]=new TrieNode();
+                    c++;
+                }
+                curr=curr->mp[nums[j]];
             }
         }
-        return s.size();
+        return c;
     }
 };
